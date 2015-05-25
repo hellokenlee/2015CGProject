@@ -4,13 +4,13 @@
 #include <array>
 #include "Texture.h"
 #include "util.h"
+class cOBJ;
 //ИљОн glMaterial{if}(GLenum face, GLenum pname, TYPE param);
 //array<float,4> for array[0]->R array[1]->G array[2]->B array[3]->A
 class cMaterial
 {
-friend cOBJ;
+friend class cOBJ;
 public:
-	cMaterial();
 	cMaterial();
 	~cMaterial();
 	bool initTexture();				//load texture from texturePath[];

@@ -6,7 +6,7 @@ cTexture tex2;
 
 
 void scene(){
-	glEnable(GL_TEXTURE_2D);
+	
 	tex2.bindTexutre();
 	glColor3f(1.0,1.0,1.0);
 	glBegin(GL_QUADS);{
@@ -35,7 +35,7 @@ void initWindow(int argc,char* argv[]){
 	glutInitWindowPosition(200,200);
 	glDepthMask(GL_TRUE);
 	glutCreateWindow("3D Cube");
-	
+	glEnable(GL_TEXTURE_2D);
 	//glutReshapeFunc(reSize);
 }
 /*你可以在这里添加你的测试函数*/

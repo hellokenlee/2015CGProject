@@ -3,7 +3,6 @@
 #define TEXTURE_H
 #include <gl/glut.h>
 #include <FreeImage.h>
-#include "Obj.h"
 #include "util.h"
 #pragma comment(lib, "FreeImage.lib")
 class cTexture
