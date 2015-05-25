@@ -11,9 +11,9 @@ public:
 	cTexture();
 	cTexture(const char* FilePath);
 	~cTexture();
-	bool loadTexture(const char* FilePath);
+	bool loadTexture(const char* FilePath);	//只调用一次
 	void unloadTexture();
-	void bindTexutre();
+	void bindTexutre();						// 每次render调用
 private:
 	FIBITMAP *pic;
 	FREE_IMAGE_FORMAT fif;

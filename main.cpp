@@ -42,7 +42,7 @@ void initWindow(int argc,char* argv[]){
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
 	//test source ..
-	tex.loadTexture("Resources/mc.jpg");
+	tex.loadTexture("Resources/c.tga");
 	tex2.loadTexture("Resources/a.png");
 	//cOBJ obj;
 	glutDisplayFunc(scene);
