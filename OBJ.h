@@ -33,7 +33,7 @@ public:
 	cFace();
 	void render(const cOBJ &Obj);
 private:
-	vector<int> Vindexs;						//顶点索引
+	vector<sVertexData> Vindexs;				//顶点索引
 	int Mindex;									//材质索引
 };
 /*OBJ 类*/
@@ -45,8 +45,8 @@ friend class cFace;
 public:
 	cOBJ();
 	cOBJ(const char* FilePath);
-	bool loadObjFromFile(const char* FilePath);
-	bool loadTextureFromFile(const char* FilePath);
+	bool loadObjFromFile(const char* FilePath);	//load *.obj
+	bool loadMaterialFromFile(const char* FilePath);//load *.mtl
 	void render();
 private:
 	vector<sVertex> Vertexs;					//顶点坐标集合
