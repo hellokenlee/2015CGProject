@@ -38,7 +38,7 @@ bool cTexture::loadTexture(const char* FilePath){
 	bits = FreeImage_GetBits(pic);
 	width = FreeImage_GetWidth(pic);
 	height = FreeImage_GetHeight(pic);
-
+	show(width);show(height);
 	if(bits==0 || width ==0 || height==0)
 		return false;
 	strcpy(_FilePath,FilePath);
@@ -54,5 +54,8 @@ void cTexture::bindTexutre(){
 	glBindTexture(GL_TEXTURE_2D,texureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Linear Min Filter
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Mag Filter
-	glTexImage2D(GL_TEXTURE_2D,0,3,width,height,0,GL_BGR_EXT,GL_UNSIGNED_BYTE,bits);
+	if(fif==FIF_PNG)
+		glTexImage2D(GL_TEXTURE_2D,0,3,width,height,0,GL_BGRA_EXT,GL_UNSIGNED_BYTE,bits);
+	else
+		glTexImage2D(GL_TEXTURE_2D,0,3,width,height,0,GL_BGR_EXT,GL_UNSIGNED_BYTE,bits);
 }

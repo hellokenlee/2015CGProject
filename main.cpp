@@ -1,12 +1,23 @@
 /*All copyrights reversed by KenLee@2015, SS, SYSU*/
 #include "main.h"
 cTexture tex;
+cTexture tex2;
 /*glut DisplayFunc*/
+
+
 void scene(){
-	//tex.bindTexutre();
 	glEnable(GL_TEXTURE_2D);
-	tex.bindTexutre();
+	tex2.bindTexutre();
 	glColor3f(1.0,1.0,1.0);
+	glBegin(GL_QUADS);{
+		glTexCoord2f(0.0f, 0.0f);glVertex3f(-1,1,0.0);
+		glTexCoord2f(1.0f, 0.0f);glVertex3f(1,1,0.0);
+		glTexCoord2f(1.0f, 1.0f);glVertex3f(1,-1,0.0);
+		glTexCoord2f(0.0f, 1.0f);glVertex3f(-1,-1,0.0);
+	}
+	glEnd();
+
+	tex.bindTexutre();
 	glBegin(GL_QUADS);{
 		glTexCoord2f(0.0f, 0.0f);glVertex3f(-0.5,0.5,0.0);
 		glTexCoord2f(1.0f, 0.0f);glVertex3f(0.5,0.5,0.0);
@@ -24,13 +35,17 @@ void initWindow(int argc,char* argv[]){
 	glutInitWindowPosition(200,200);
 	glDepthMask(GL_TRUE);
 	glutCreateWindow("3D Cube");
-	glutDisplayFunc(scene);
+	
 	//glutReshapeFunc(reSize);
 }
 /*你可以在这里添加你的测试函数*/
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
+	//test source ..
 	tex.loadTexture("Resources/mc.jpg");
+	tex2.loadTexture("Resources/a.png");
+	//cOBJ obj;
+	glutDisplayFunc(scene);
 	glutMainLoop();
 	return 0;
 }
