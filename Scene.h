@@ -2,6 +2,7 @@
 #define SCENE_H
 #include "OBJ.h"
 #include "Camera.h"
+#include "Player.h"
 class cScene
 {
 public:
@@ -9,9 +10,10 @@ public:
 	~cScene();
 	void render();
 private:
+	cOBJ SkyBox;
 	cOBJ LandForm;
-	cCamera *Camera;
-	//cPlayer Player;
+	//cCamera *Camera;
+	cPlayer Player;
 }
 
 #endif

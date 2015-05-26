@@ -20,10 +20,12 @@ public:
 	
 	void yaw(unsigned int speed);
 	void pitch(unsigned int speed);
-	void moveForward();
-	void moveBack();
-	void moveLeft();
-	void moveRight();
+	void moveForward();					//向前
+	void moveBack();					//向后
+	void moveLeft();					//向左
+	void moveRight();					//向右
+	void moveUp();						//向上
+	void moveDown();					//向下
 
 private:
 	cCamera();

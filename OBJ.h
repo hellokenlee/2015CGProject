@@ -10,7 +10,7 @@ class cPoint
 {
 friend class cOBJ;
 public:
-	void render(const cOBJ &Obj);
+	void render(cOBJ &Obj);
 private:
 	int VIndex;									//顶点坐标
 };
@@ -20,7 +20,7 @@ class cLine
 {
 friend class cOBJ;
 public:
-	void render(const cOBJ &Obj);
+	void render(cOBJ &Obj);
 private:
 	vector<int> Vindexs;						//顶点坐标
 };
@@ -31,7 +31,7 @@ class cFace
 friend class cOBJ;
 public:
 	cFace();
-	void render(const cOBJ &Obj);
+	void render(cOBJ &Obj);
 private:
 	vector<sVertexData> Vindexs;				//顶点索引
 	int Mindex;									//材质索引

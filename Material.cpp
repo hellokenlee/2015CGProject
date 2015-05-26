@@ -11,11 +11,24 @@ cMaterial::cMaterial(){
 	fShiness=50.0;
 	fTrans=1.0;
 }
+cMaterial::cMaterial(array<float,4> _ambient,array<float,4> _diffuse,array<float,4> _specular,array<float,4> _emission,float _fShiness,float _fTrans){
+	ambient=_ambient;
+	diffuse=_diffuse;
+	specular=_specular;
+	emission=_emission;
+	fShiness=_fShiness;
+	fTrans=_fTrans;
+}
 cMaterial::~cMaterial(){
 	//do nothing
 }
 bool cMaterial::initTexture(){
 	return tex.loadTexture(texturePath);
+}
+void cMaterial::setTexturePath(const char* FilePath){
+	if(strlen(FilePath)>=PATH_SIZE)
+		printf("texture path too long!\n");
+	strcpy(texturePath,FilePath);
 }
 void cMaterial::setMaterial(){
 	/*glEnable(GL_BLEND);
