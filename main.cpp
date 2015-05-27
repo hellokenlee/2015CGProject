@@ -52,18 +52,24 @@ void initWindow(int argc,char* argv[]){
 //reshape funx
 void reshape(GLsizei w,GLsizei h)
 {
+	
 	glViewport(0,0,w,h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	if(w<=h)
-		glOrtho(-2.0,2.0,-2.0*(GLfloat)h/(GLfloat)w,
-		2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0);
+		glFrustum(-2.0, 2.0, -2.0 * (GLfloat)h / (GLfloat)w,
+			2.0* (GLfloat)h / (GLfloat)w, 2.0, 10.0);
+		//glOrtho(-2.0,2.0,-2.0*(GLfloat)h/(GLfloat)w,
+		//2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0);
 	else
-		glOrtho(-2.0*(GLfloat)h/(GLfloat)w,
-		2.0*(GLfloat)h/(GLfloat)w,-2.0,2.0,-10.0,10.0);
+		glFrustum(-2.0*(GLfloat)h/(GLfloat)w,
+		2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0,2.0,10.0);
+		//glOrtho(-2.0*(GLfloat)h/(GLfloat)w,
+		//2.0*(GLfloat)h/(GLfloat)w,-2.0,2.0,-10.0,10.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
 }
 
 /******************************controller debug func **************************************/
@@ -111,7 +117,7 @@ void back(){
 /*你可以在这里添加你的测试函数*/
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
-	OBJ.loadObjFromFile("Resources/objs/landform/one_block.obj");
+	OBJ.loadObjFromFile("one_block.obj");
 	cController controller;
 	controller.setUpFunc(up);
 	controller.setDownFunc(down);
