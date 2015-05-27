@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Material.h"
 cMaterial::cMaterial(){
 	for(int i=0;i<4;++i){
@@ -39,7 +40,8 @@ void cMaterial::setMaterial(){
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, &diffuse[0]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, &specular[0]);
 	glMaterialfv(GL_FRONT, GL_EMISSION, &emission[0]);
-	glMaterialf(GL_FRONT, GL_SHININESS, fShiness);
+	//glMaterialf(GL_FRONT, GL_SHININESS, fShiness);   //暂时不用
 	//设置纹理
+
 	tex.bindTexutre();
 }

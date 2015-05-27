@@ -13,6 +13,12 @@ cMaterial mat2(a,d,s,e,fs,ft);
 /*glut DisplayFunc*/
 void scene(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+
+	cOBJ OBJ;
+	OBJ.loadObjFromFile("one_colunm.obj");
+	OBJ.render();
+	/*
 	//glColor3f(1,1,1);
 	mat.setMaterial();
 	//glutSolidSphere( 0.5f, 50, 50 ); 
@@ -24,8 +30,8 @@ void scene(){
 		glTexCoord2f(1.0f, 1.0f);glVertex3f(0,2,0.0);
 		glTexCoord2f(0.0f, 1.0f);glVertex3f(-2,2,0.0);
 	}
-	glEnd();
-	mat2.setMaterial();
+	*/
+	//mat2.setMaterial();
 	glutSolidSphere( 0.5f, 50, 50 ); 
 	glutSwapBuffers();
 }
@@ -76,8 +82,10 @@ int main(int argc, char* argv[]){
 	//tex.loadTexture("Resources/mc.jpg");
 	//tex2.loadTexture("Resources/a.png");
 	//cOBJ obj;
-	mat.setTexturePath("Resources/mc.jpg");
-	mat.initTexture();
+
+	
+	//mat.setTexturePath("Resources/mc.jpg");
+	//mat.initTexture();
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(scene);
 	glutMainLoop();
