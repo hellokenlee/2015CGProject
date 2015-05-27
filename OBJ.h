@@ -10,7 +10,7 @@ class cPoint
 {
 friend class cOBJ;
 public:
-	void render(cOBJ &Obj);
+	void render(const cOBJ &Obj);
 private:
 	int VIndex;									//顶点坐标
 };
@@ -20,7 +20,7 @@ class cLine
 {
 friend class cOBJ;
 public:
-	void render(cOBJ &Obj);
+	void render(const cOBJ &Obj);
 private:
 	vector<int> Vindexs;						//顶点坐标
 };
@@ -48,6 +48,7 @@ public:
 	bool loadObjFromFile(const char* FilePath);	//load *.obj
 	bool loadMaterialFromFile(const char* FilePath);//load *.mtl
 	void render();
+	void print_vetor();
 private:
 	vector<sVertex> Vertexs;					//顶点坐标集合
 	vector<sTextureVertex> TVertex;				//顶点纹理坐标集合
