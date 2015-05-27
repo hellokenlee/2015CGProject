@@ -38,7 +38,7 @@ bool cTexture::loadTexture(const char* FilePath){
 	bits = FreeImage_GetBits(pic);
 	width = FreeImage_GetWidth(pic);
 	height = FreeImage_GetHeight(pic);
-	show(width);show(height);
+	//show(width);show(height);
 	if(bits==0 || width ==0 || height==0)
 		return false;
 	strcpy(_FilePath,FilePath);

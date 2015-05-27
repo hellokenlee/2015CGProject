@@ -10,30 +10,19 @@ float fs=50;
 float ft=1;
 cMaterial mat(a,d,s,e,fs,ft);
 cMaterial mat2(a,d,s,e,fs,ft);
+cOBJ OBJ;
+float angle=1;
 /*glut DisplayFunc*/
 void scene(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
-
-	cOBJ OBJ;
-	OBJ.loadObjFromFile("one_colunm.obj");
-	OBJ.render();
-	/*
-	//glColor3f(1,1,1);
-	mat.setMaterial();
-	//glutSolidSphere( 0.5f, 50, 50 ); 
-	
-	//tex.bindTexutre();
-	glBegin(GL_QUADS);{
-		glTexCoord2f(0.0f, 0.0f);glVertex3f(-2,0,0.0);
-		glTexCoord2f(1.0f, 0.0f);glVertex3f(0,0,0.0);
-		glTexCoord2f(1.0f, 1.0f);glVertex3f(0,2,0.0);
-		glTexCoord2f(0.0f, 1.0f);glVertex3f(-2,2,0.0);
-	}
-	*/
-	//mat2.setMaterial();
-	glutSolidSphere( 0.5f, 50, 50 ); 
+	glRotatef(angle,0,1,0);
+	//OBJ.render();
 	glutSwapBuffers();
+}
+//时间回调
+void onTimer( int iTimerIndex){
+	glutPostRedisplay();//刷新显示
+	glutTimerFunc( 10, onTimer, 0);
 }
 /*初始化*/
 void initWindow(int argc,char* argv[]){
@@ -49,8 +38,8 @@ void initWindow(int argc,char* argv[]){
 	glLightfv(GL_LIGHT0,GL_POSITION,light_position);
 
 	//将光源设置应用
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHT0);
 
 	//着色消隐
 	glDepthFunc(GL_LESS);
@@ -73,22 +62,44 @@ void reshape(GLsizei w,GLsizei h)
 	glLoadIdentity();
 }
 
+/******************************controller debug func **************************************/
+void up(){
+	show("up");
+}
+void down(){
+	show("down");
+}
+void left(){
+	show("left");
+}
+void right(){
+	show("right");
+}
+
+void forward(){
+	show("forward");
+}
+void back(){
+	show("back");
+}
+/******************************controller debug func  ENDS**************************************/
+
 
 /*你可以在这里添加你的测试函数*/
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
-
-	//test source ..
-	//tex.loadTexture("Resources/mc.jpg");
-	//tex2.loadTexture("Resources/a.png");
-	//cOBJ obj;
-
-	
-	//mat.setTexturePath("Resources/mc.jpg");
-	//mat.initTexture();
+	//OBJ.loadObjFromFile("Resources/objs/landform/one_colunm.obj");
+	cController controller;
+	controller.setUpFunc(up);
+	controller.setDownFunc(down);
+	controller.setForwardFunc(forward);
+	controller.setBackFunc(back);
+	controller.setLeftFunc(left);
+	controller.setRightFunc(right);
+	controller.initController();
+	glutTimerFunc(10,onTimer,0);
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(scene);
 	glutMainLoop();
-	
 	return 0;
 }

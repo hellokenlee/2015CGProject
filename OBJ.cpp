@@ -385,6 +385,7 @@ void cOBJ::print_vetor(){
 	}
 	*/
 	//obj–≈œ¢
+	/*
 	for(size_t i = 0;i<this->Faces.size();i++){
 		for(size_t j = 0;j<this->Faces[i].Vindexs.size();j++){
 			//cout<<"F_V : "<<this->Faces[i].Vindexs[j].m_nVI<<endl;
