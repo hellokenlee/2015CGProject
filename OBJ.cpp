@@ -65,34 +65,31 @@ void cLine::render(const cOBJ &Obj){}	//waiting...
 
 cFace::cFace(){}
 void cFace::render(cOBJ &Obj){
-	for(size_t i = 0;i<Obj.Faces.size();i++){
 		//注意加上判断是否有材质
-		/*if(Obj.Faces[i].Mindex != -1){
-			(Obj.Materials[Obj.Faces[i].Mindex]).setMaterial();
-		}*/
-		glColor3f(1,1,1);
+
+		if(this->Mindex != -1){
+			(Obj.Materials[this->Mindex]).setMaterial();
+		}
 		glBegin(GL_POLYGON);
-		for(size_t j = 0;j<Obj.Faces[i].Vindexs.size();j++){
-			/*
+		for(size_t j = 0;j<this->Vindexs.size();j++){
 			//切记索引要-1
-			if(Obj.Faces[i].Vindexs[j].m_bVt){
-				if(Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fT == -1){
-					glTexCoord2f(Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fP,
-						Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fS);
+			if(this->Vindexs[j].m_bVt){
+				if(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fT == -1){
+					glTexCoord2f(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fP,
+						Obj.TVertex[this->Vindexs[j].m_nVtI-1].fS);
 				}
 				else{
-					glTexCoord3f(Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fP,
-						Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fS,
-						Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fT);
+					glTexCoord3f(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fP,
+						Obj.TVertex[this->Vindexs[j].m_nVtI-1].fS,
+						Obj.TVertex[this->Vindexs[j].m_nVtI-1].fT);
 				}
-			}*/
-			glVertex3f(Obj.Vertexs[Obj.Faces[i].Vindexs[j].m_nVI-1].fX,
-				Obj.Vertexs[Obj.Faces[i].Vindexs[j].m_nVI-1].fY,
-				Obj.Vertexs[Obj.Faces[i].Vindexs[j].m_nVI-1].fZ);
+			}
+			glVertex3f(Obj.Vertexs[this->Vindexs[j].m_nVI-1].fX,
+				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fY,
+				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fZ);
 		}
-
+		
 		glEnd();
-	}
 
 }
 
@@ -368,11 +365,13 @@ bool cOBJ::loadMaterialFromFile(const char* FilePath){
 }
 
 void cOBJ::render(){
+
+	//cout<<"face_size:"<<this->Faces.size()<<endl;
 	for(size_t i = 0;i<this->Faces.size();i++){
 		this->Faces[i].render(*this);
+		//cout<<"face"<<i<<" have done!"<<endl;
 	}
 }
-
 
 
 
