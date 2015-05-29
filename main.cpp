@@ -12,7 +12,7 @@ cMaterial mat(a,d,s,e,fs,ft);
 cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
 float angle=1;
-float posX=0,posY=0,posZ=0,viewX=0,viewY=0,viewZ=-100, upX=0,upY=1,upZ=0;
+float posX=0,posY=0,posZ=3,viewX=0,viewY=0,viewZ=-100, upX=0,upY=1,upZ=0;
 /*glut DisplayFunc*/
 void scene(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);

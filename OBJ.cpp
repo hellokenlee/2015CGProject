@@ -67,12 +67,13 @@ cFace::cFace(){}
 void cFace::render(cOBJ &Obj){
 	for(size_t i = 0;i<Obj.Faces.size();i++){
 		//注意加上判断是否有材质
-		if(Obj.Faces[i].Mindex != -1){
+		/*if(Obj.Faces[i].Mindex != -1){
 			(Obj.Materials[Obj.Faces[i].Mindex]).setMaterial();
-		}
+		}*/
+		glColor3f(1,1,1);
 		glBegin(GL_POLYGON);
 		for(size_t j = 0;j<Obj.Faces[i].Vindexs.size();j++){
-
+			/*
 			//切记索引要-1
 			if(Obj.Faces[i].Vindexs[j].m_bVt){
 				if(Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fT == -1){
@@ -84,7 +85,7 @@ void cFace::render(cOBJ &Obj){
 						Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fS,
 						Obj.TVertex[Obj.Faces[i].Vindexs[j].m_nVtI-1].fT);
 				}
-			}
+			}*/
 			glVertex3f(Obj.Vertexs[Obj.Faces[i].Vindexs[j].m_nVI-1].fX,
 				Obj.Vertexs[Obj.Faces[i].Vindexs[j].m_nVI-1].fY,
 				Obj.Vertexs[Obj.Faces[i].Vindexs[j].m_nVI-1].fZ);
