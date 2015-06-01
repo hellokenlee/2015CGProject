@@ -8,18 +8,18 @@ using namespace std;
 class cCamera
 {
 public:
-	static cCamera getCamera();
+	static cCamera &getCamera();
 	
 	void setCamera(double posx,double posy,double posz,double viewx,double viewy,double viewz,double upx,double upy,double upz);
 	array<double,3> getPosition();
 	array<double,3> getView();
 	array<double,3> getUp();
 
-	unsigned int getSpeed();
-	void setSpeed(unsigned int speed);
+	double getSpeed();
+	void setSpeed(double speed);
 	
-	void yaw(unsigned int speed);
-	void pitch(unsigned int speed);
+	void yaw(double angleRadian);
+	void pitch(double angleRadian);
 	void moveForward();					//向前
 	void moveBack();					//向后
 	void moveLeft();					//向左
@@ -30,9 +30,15 @@ public:
 private:
 	cCamera();
 	static cCamera *p_Camera;
-	unsigned int speed;
+	double speed;
 	array<double,3> position;
 	array<double,3> view;
 	array<double,3> up;
+
+public:
+	void setLook();
+private:
+	void rotateView(double angle, double x, double y, double z);
+	void rotateUp(double angle, double x, double y, double z);
 };
 #endif
