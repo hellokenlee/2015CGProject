@@ -46,10 +46,13 @@ bool cTexture::loadTexture(const char* FilePath){
 	glGenTextures(1, &texureId);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 	glBindTexture(GL_TEXTURE_2D,texureId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Linear Min Filter
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Mag Filter
 	if(fif==FIF_PNG||fif==FIF_TARGA||fif==FIF_GIF)
-		glTexImage2D(GL_TEXTURE_2D,0,3,width,height,0,GL_BGRA_EXT,GL_UNSIGNED_BYTE,bits);//支持透明的图片格式 需要设置格式为BGRA
+		//glTexImage2D(GL_TEXTURE_2D,0,3,width,height,0,GL_BGRA_EXT,GL_UNSIGNED_BYTE,bits);//支持透明的图片格式 需要设置格式为BGRA
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_BGRA_EXT,width,height,0, GL_BGRA_EXT,GL_UNSIGNED_BYTE, bits);
 	else
 		glTexImage2D(GL_TEXTURE_2D,0,3,width,height,0,GL_BGR_EXT,GL_UNSIGNED_BYTE,bits);//不支持透明的图片格式 
 	return true;

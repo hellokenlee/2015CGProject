@@ -19,6 +19,9 @@ cController::cController(char down,char up,char left,char right,char forward,cha
 }
 void cController::initController(){
 	glutKeyboardFunc(keyProcess);
+	glutPassiveMotionFunc(mouseMovFunc);
+	glutMotionFunc(mouseDragFunc);
+	glutMouseFunc(mouseClickFunc);
 }
 void cController::setUpFunc(void (*Func)(void)){
 	upFunc=Func;
@@ -39,8 +42,19 @@ void cController::setRightFunc(void (*Func)(void)){
 	rightFunc=Func;
 }
 
+void cController::setMouseMovFunc(void (*Func)(int x,int y)){
+	mouseMovFunc=Func;
+}
+
+void cController::setMouseDragFunc(void (*Func)(int x,int y)){
+	mouseDragFunc=Func;
+}
+
+void cController::setMouseClickFunc(void (*Func)(int buttom,int state,int x,int y)){
+	mouseClickFunc=Func;
+}
 void cController::keyProcess(unsigned char key,int x,int y){
-	show(key);
+	//show(key);
 	if(key==kForward)
 		forwardFunc();
 	else if(key==kBack)

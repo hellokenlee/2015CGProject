@@ -32,9 +32,10 @@ void cMaterial::setTexturePath(const char* FilePath){
 	strcpy(texturePath,FilePath);
 }
 void cMaterial::setMaterial(){
-	/*glEnable(GL_BLEND);
+	//开启blend 混色器 来渲染透明纹理
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glBlendEquation(GL_ADD);*/
+	//glBlendEquation(GL_ADD);
 	//设置材质
 	glMaterialfv(GL_FRONT, GL_AMBIENT, &ambient[0]);
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, &diffuse[0]);

@@ -26,3 +26,8 @@ void (*cController::backFunc)(void);
 void (*cController::forwardFunc)(void);
 void (*cController::leftFunc)(void);
 void (*cController::rightFunc)(void);
+void (*cController::mouseClickFunc)(int buttom,int state,int x,int y);
+void (*cController::mouseMovFunc)(int x,int y);
+void (*cController::mouseDragFunc)(int x,int y);
+
+cCamera* cCamera::p_Camera=NULL;

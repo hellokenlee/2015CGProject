@@ -12,14 +12,17 @@ cMaterial mat(a,d,s,e,fs,ft);
 cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
 float angle=1;
-float posX=0,posY=0,posZ=3,viewX=0,viewY=0,viewZ=-100, upX=0,upY=1,upZ=0;
+float posX=0,posY=0,posZ=0,viewX=0,viewY=0,viewZ=-100, upX=0,upY=1,upZ=0;
+cCamera *pCamera;
 /*glut DisplayFunc*/
 void scene(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	gluLookAt(posX,posY,posZ,viewX,viewY,viewZ,upX,upY,upZ);
+	pCamera->bindCamera();
 	//glRotatef(angle,0,1,0);
+	//gluLookAt( posX,posY,posZ,viewX,viewY,viewZ, upX,upY,upZ);
 	OBJ.render();
+	
 	glutSwapBuffers();
 }
 //时间回调
@@ -49,7 +52,7 @@ void initWindow(int argc,char* argv[]){
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 }
-//reshape funx
+//reshape func
 void reshape(GLsizei w,GLsizei h)
 {
 	
@@ -58,12 +61,12 @@ void reshape(GLsizei w,GLsizei h)
 	glLoadIdentity();
 	if(w<=h)
 		glFrustum(-2.0, 2.0, -2.0 * (GLfloat)h / (GLfloat)w,
-			2.0* (GLfloat)h / (GLfloat)w, 2.0, 10.0);
+			2.0* (GLfloat)h / (GLfloat)w, 2.0, 100.0);
 		//glOrtho(-2.0,2.0,-2.0*(GLfloat)h/(GLfloat)w,
 		//2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0);
 	else
 		glFrustum(-2.0*(GLfloat)h/(GLfloat)w,
-		2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0,2.0,10.0);
+		2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0,2.0,100.0);
 		//glOrtho(-2.0*(GLfloat)h/(GLfloat)w,
 		//2.0*(GLfloat)h/(GLfloat)w,-2.0,2.0,-10.0,10.0);
 
@@ -75,37 +78,41 @@ void reshape(GLsizei w,GLsizei h)
 /******************************controller debug func **************************************/
 
 void up(){
-	show("up");
-	posY+=0.5;
+	pCamera->moveUp();
+	//pCamera->pitchCamera(0.05);
 }
 void down(){
-	show("down");
-	posY-=0.5;
+	pCamera->moveDown();
+	//pCamera->pitchCamera(-0.05);
 }
 void left(){
-	show("left");
-	posX-=0.1;
-	viewX+=0.1;
+	pCamera->moveLeft();
+	//pCamera->yawCamera(0.05);
+	//pCamera->pitchCamera(0.05);
+	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
+	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
 }
 void right(){
-	show("right");
-	posX+=0.1;
+	pCamera->moveRight();
+	//pCamera->yawCamera(-0.05);
+	//pCamera->pitchCamera(-0.05);
+	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
+	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
 }
 
 void forward(){
-	show("forward,posz:");
-	show(posZ);
-	posZ-=1;
-	viewZ-=1;
+	pCamera->moveForward();
 }
 void back(){
-	show("back,posz:");
-	show(posZ);
-	posZ+=1;
-	viewZ-=1;
-	glutPostRedisplay();
+	pCamera->moveBack();
 }
-
+int px=-1,py=-1;
+void mouse(int nx,int ny){
+	if(px!=-1)
+		pCamera->setViewByMouse(px,py,nx,ny);
+	px=nx;
+	py=ny;
+}
 
 //default 0 0 0 / 0 0 -100 / 0 1 0
 //默认情况下，相机位于原点，指向z轴的负向，同时把y轴的正向作为向上向量。这就相当于调用：gluLookAt(0.0,0.0,0.0,    0.0,0.0,-100.0,    0.0,1.0,0.0 )
@@ -118,6 +125,11 @@ void back(){
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
 	OBJ.loadObjFromFile("one_block.obj");
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	OBJ.print_vetor();
+	pCamera=cCamera::getCamera();
+
+
 	cController controller;
 	controller.setUpFunc(up);
 	controller.setDownFunc(down);
@@ -125,6 +137,7 @@ int main(int argc, char* argv[]){
 	controller.setBackFunc(back);
 	controller.setLeftFunc(left);
 	controller.setRightFunc(right);
+	controller.setMouseDragFunc(mouse);
 	controller.initController();
 	glutTimerFunc(10,onTimer,0);
 	glutReshapeFunc(reshape);

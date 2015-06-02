@@ -2,6 +2,7 @@
 #define CONTROLLER_H
 #include <gl/glut.h>
 #include "util.h"
+#include "Camera.h"
 //当作一个静态类
 class cController
 {
@@ -15,7 +16,10 @@ public:
 	void setBackFunc(void (*Func)(void));
 	void setLeftFunc(void (*Func)(void));
 	void setRightFunc(void (*Func)(void));
-	
+
+	void setMouseMovFunc(void (*Func)(int x,int y));
+	void setMouseClickFunc(void (*Func)(int buttom,int state,int x,int y));
+	void setMouseDragFunc(void (*Func)(int x,int y));
 private:
 	static char kDown;
 	static char kUp;
@@ -31,5 +35,8 @@ private:
 	static void (*forwardFunc)(void);
 	static void (*leftFunc)(void);
 	static void (*rightFunc)(void);
+	static void (*mouseMovFunc)(int x,int y);
+	static void (*mouseClickFunc)(int buttom,int state,int x,int y);
+	static void (*mouseDragFunc)(int x,int y);
 };
 #endif
