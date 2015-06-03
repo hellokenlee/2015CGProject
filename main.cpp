@@ -13,6 +13,8 @@ cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
 float angle=1;
 float posX=0,posY=0,posZ=0,viewX=0,viewY=0,viewZ=-100, upX=0,upY=1,upZ=0;
+
+
 /*glut DisplayFunc*/
 void scene(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -38,16 +40,24 @@ void initWindow(int argc,char* argv[]){
 	glutInitWindowPosition(200,200);
 	glDepthMask(GL_TRUE);
 	glutCreateWindow("3D Cube");
-	glEnable(GL_TEXTURE_2D);
-	//光源
-	GLfloat light_position[]={1.0,1.0,1.0,0.0};
-	glLightfv(GL_LIGHT0,GL_POSITION,light_position);
-	//将光源设置应用
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT0);
-	//着色消隐
+
+	//设置光照模型
+	GLfloat light_position[] = {1.0,1.0,1.0,1.0};
+	GLfloat light_ambient [] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_diffuse [] = { 0.5, 0.5, 0.5, 1.0 };
+	GLfloat light_specular[] = { 0.8, 0.8, 0.8, 1.0 };
+	
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT0, GL_AMBIENT , light_ambient );
+    glLightfv(GL_LIGHT0, GL_DIFFUSE , light_diffuse );
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
 }
 //reshape funx
 void reshape(GLsizei w,GLsizei h)
@@ -113,11 +123,11 @@ void back(){
 
 
 
-
 /*你可以在这里添加你的测试函数*/
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
-	OBJ.loadObjFromFile("one_block.obj");
+	OBJ.loadObjFromFile("minecraft.obj");
+	OBJ.setPShift(0,0,0);
 	cController controller;
 	controller.setUpFunc(up);
 	controller.setDownFunc(down);
