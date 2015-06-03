@@ -40,15 +40,9 @@ private:
 	static cCamera *p_Camera;
 	float speed;
 
-	double speed;
 	array<double,3> position;
 	array<double,3> view;
 	array<double,3> up;
 
-public:
-	void setLook();
-private:
-	void rotateView(double angle, double x, double y, double z);
-	void rotateUp(double angle, double x, double y, double z);
 };
 #endif

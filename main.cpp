@@ -15,11 +15,8 @@ float ft=1;
 cMaterial mat(a,d,s,e,fs,ft);
 cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
-
+cOBJ sOBJ;
 cCamera *pCamera;
-int isLeftWin;
-int snx,sny,spx,spy;
-int clipflag=1;
 POINT mpos;
 
 /*glut DisplayFunc*/
@@ -28,6 +25,7 @@ void scene(){
 	glLoadIdentity();
 	pCamera->bindCamera();
 	OBJ.render();
+	//sOBJ.render();
 	glutSwapBuffers();
 }
 
@@ -52,8 +50,8 @@ void initWindow(int argc,char* argv[]){
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHT0);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -112,17 +110,8 @@ void forward(){
 }
 void back(){
 	pCamera->moveBack();
-	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
-	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
-}
-int px=-1,py=-1;
-
-//定时器
-void onTimer(int iTimerIndex){
-	if(!isLeftWin)
-		return;
-	pCamera->setViewByMouse(spx,spy,snx,sny);
-	glutTimerFunc(3, onTimer, 0);
+	cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
+	cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
 }
 void refresh(int i){
 	//windows 鼠标设置
@@ -147,10 +136,9 @@ int main(int argc, char* argv[]){
 	SetCursorPos(700,400);
 	//glutSetCursor(GLUT_CURSOR_NONE);
 	
-	OBJ.loadObjFromFile("one_block.obj");
-	
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	OBJ.print_vetor();
+	OBJ.loadObjFromFile("aTree.obj");
+	//sOBJ.loadObjFromFile("skyBox.obj");
+
 	pCamera=cCamera::getCamera();
 
 	cController controller;
