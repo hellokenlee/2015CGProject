@@ -1,4 +1,4 @@
-/*All copyrights reversed by KenLee@2015, SS, SYSU*/
+ï»¿/*All copyrights reversed by KenLee@2015, SS, SYSU*/
 #include "main.h"
 int winHeight =600;
 int winWidth =600;
@@ -15,8 +15,10 @@ float ft=1;
 cMaterial mat(a,d,s,e,fs,ft);
 cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
-cOBJ sOBJ;
 cCamera *pCamera;
+int isLeftWin;
+int snx,sny,spx,spy;
+int clipflag=1;
 POINT mpos;
 
 /*glut DisplayFunc*/
@@ -25,11 +27,10 @@ void scene(){
 	glLoadIdentity();
 	pCamera->bindCamera();
 	OBJ.render();
-	//sOBJ.render();
 	glutSwapBuffers();
 }
 
-/*³õÊ¼»¯*/
+/*åˆå§‹åŒ–*/
 void initWindow(int argc,char* argv[]){
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB|GLUT_DOUBLE);
@@ -38,7 +39,7 @@ void initWindow(int argc,char* argv[]){
 	glDepthMask(GL_TRUE);
 	glutCreateWindow("3D Cube");
 
-	//ÉèÖÃ¹âÕÕÄ£ĞÍ
+	//è®¾ç½®å…‰ç…§æ¨¡å‹
 	GLfloat light_position[] = {1.0,1.0,1.0,1.0};
 	GLfloat light_ambient [] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat light_diffuse [] = { 0.5, 0.5, 0.5, 1.0 };
@@ -50,8 +51,8 @@ void initWindow(int argc,char* argv[]){
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 
 
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
@@ -110,11 +111,20 @@ void forward(){
 }
 void back(){
 	pCamera->moveBack();
-	cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
-	cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
+	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
+	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
+}
+int px=-1,py=-1;
+
+//å®šæ—¶å™¨
+void onTimer(int iTimerIndex){
+	if(!isLeftWin)
+		return;
+	pCamera->setViewByMouse(spx,spy,snx,sny);
+	glutTimerFunc(3, onTimer, 0);
 }
 void refresh(int i){
-	//windows Êó±êÉèÖÃ
+	//windows é¼ æ ‡è®¾ç½®
 	GetCursorPos(&mpos);
 	pCamera->setViewByMouse(700,400,mpos.x,mpos.y);
 	SetCursorPos(700,400);
@@ -125,20 +135,21 @@ void refresh(int i){
 
 
 //default 0 0 0 / 0 0 -100 / 0 1 0
-//Ä¬ÈÏÇé¿öÏÂ£¬Ïà»úÎ»ÓÚÔ­µã£¬Ö¸ÏòzÖáµÄ¸ºÏò£¬Í¬Ê±°ÑyÖáµÄÕıÏò×÷ÎªÏòÉÏÏòÁ¿¡£Õâ¾ÍÏàµ±ÓÚµ÷ÓÃ£ºgluLookAt(0.0,0.0,0.0,    0.0,0.0,-100.0,    0.0,1.0,0.0 )
+//é»˜è®¤æƒ…å†µä¸‹ï¼Œç›¸æœºä½äºåŸç‚¹ï¼ŒæŒ‡å‘zè½´çš„è´Ÿå‘ï¼ŒåŒæ—¶æŠŠyè½´çš„æ­£å‘ä½œä¸ºå‘ä¸Šå‘é‡ã€‚è¿™å°±ç›¸å½“äºè°ƒç”¨ï¼šgluLookAt(0.0,0.0,0.0,    0.0,0.0,-100.0,    0.0,1.0,0.0 )
 /******************************controller debug func  ENDS**************************************/
 
 
 
-/*Äã¿ÉÒÔÔÚÕâÀïÌí¼ÓÄãµÄ²âÊÔº¯Êı*/
+/*ä½ å¯ä»¥åœ¨è¿™é‡Œæ·»åŠ ä½ çš„æµ‹è¯•å‡½æ•°*/
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
 	SetCursorPos(700,400);
 	//glutSetCursor(GLUT_CURSOR_NONE);
 	
-	OBJ.loadObjFromFile("aTree.obj");
-	//sOBJ.loadObjFromFile("skyBox.obj");
-
+	OBJ.loadObjFromFile("one_block.obj");
+	
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	OBJ.print_vetor();
 	pCamera=cCamera::getCamera();
 
 	cController controller;
