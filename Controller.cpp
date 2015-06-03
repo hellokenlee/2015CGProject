@@ -22,6 +22,7 @@ void cController::initController(){
 	glutPassiveMotionFunc(mouseMovFunc);
 	glutMotionFunc(mouseDragFunc);
 	glutMouseFunc(mouseClickFunc);
+	glutEntryFunc(mouseLefrFunc);
 }
 void cController::setUpFunc(void (*Func)(void)){
 	upFunc=Func;
@@ -52,6 +53,9 @@ void cController::setMouseDragFunc(void (*Func)(int x,int y)){
 
 void cController::setMouseClickFunc(void (*Func)(int buttom,int state,int x,int y)){
 	mouseClickFunc=Func;
+}
+void cController::setMouseLeftFunc(void (*Func)(int state)){
+	mouseLefrFunc=Func;
 }
 void cController::keyProcess(unsigned char key,int x,int y){
 	//show(key);

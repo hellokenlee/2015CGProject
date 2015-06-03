@@ -20,6 +20,7 @@ public:
 	void setMouseMovFunc(void (*Func)(int x,int y));
 	void setMouseClickFunc(void (*Func)(int buttom,int state,int x,int y));
 	void setMouseDragFunc(void (*Func)(int x,int y));
+	void setMouseLeftFunc(void (*Func)(int state));
 private:
 	static char kDown;
 	static char kUp;
@@ -38,5 +39,6 @@ private:
 	static void (*mouseMovFunc)(int x,int y);
 	static void (*mouseClickFunc)(int buttom,int state,int x,int y);
 	static void (*mouseDragFunc)(int x,int y);
+	static void (*mouseLefrFunc)(int state);
 };
 #endif

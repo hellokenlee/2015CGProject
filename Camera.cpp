@@ -75,7 +75,7 @@ void cCamera::pitchCamera(double angle){
 	double cosT=cos(angle);
 
 	float dir[2]={(view[1]-position[1]),(view[2]-position[2])};
-
+	
 	//change y
 	view[1]=dir[0]*cosT+dir[1]*sinT+position[1];
 	//change z
@@ -99,8 +99,8 @@ void cCamera::setViewByMouse(int px,int py,int nx,int ny){
 	 double dy=ny-py;
 	 //show(dx);
 	 //show(dy);
-	 pitchCamera(dy*0.005);
-	 yawCamera(dx*0.005);
+	 pitchCamera(dy*0.003);
+	 yawCamera(-dx*0.003);
 }
 
 void cCamera::moveForward(){

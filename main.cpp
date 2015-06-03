@@ -1,5 +1,9 @@
 /*All copyrights reversed by KenLee@2015, SS, SYSU*/
 #include "main.h"
+int winHeight =600;
+int winWidth =600;
+int winPosX=400;
+int winPosY=100;
 cTexture tex;
 cTexture tex2;
 array<float,4> a={0.8,0,0.8,1.0};
@@ -11,34 +15,26 @@ float ft=1;
 cMaterial mat(a,d,s,e,fs,ft);
 cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
-float angle=1;
-float posX=0,posY=0,posZ=0,viewX=0,viewY=0,viewZ=-100, upX=0,upY=1,upZ=0;
 cCamera *pCamera;
+int isLeftWin;
+int snx,sny,spx,spy;
+int clipflag=1;
+POINT mpos;
 /*glut DisplayFunc*/
 void scene(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	pCamera->bindCamera();
-	//glRotatef(angle,0,1,0);
-	//gluLookAt( posX,posY,posZ,viewX,viewY,viewZ, upX,upY,upZ);
 	OBJ.render();
-	
 	glutSwapBuffers();
 }
-//时间回调
-void onTimer( int iTimerIndex){
-	glutPostRedisplay();//刷新显示
-	angle++;
-	if(angle>=360)
-		angle=0;
-	glutTimerFunc( 10, onTimer, 0);
-}
+
 /*初始化*/
 void initWindow(int argc,char* argv[]){
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_RGB|GLUT_DOUBLE);
-	glutInitWindowSize(500,500);
-	glutInitWindowPosition(200,200);
+	glutInitWindowSize(winWidth,winHeight);
+	glutInitWindowPosition(winPosX,winPosY);
 	glDepthMask(GL_TRUE);
 	glutCreateWindow("3D Cube");
 	glEnable(GL_TEXTURE_2D);
@@ -55,7 +51,6 @@ void initWindow(int argc,char* argv[]){
 //reshape func
 void reshape(GLsizei w,GLsizei h)
 {
-	
 	glViewport(0,0,w,h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -80,10 +75,12 @@ void reshape(GLsizei w,GLsizei h)
 void up(){
 	pCamera->moveUp();
 	//pCamera->pitchCamera(0.05);
+	//glutPostRedisplay();
 }
 void down(){
 	pCamera->moveDown();
 	//pCamera->pitchCamera(-0.05);
+
 }
 void left(){
 	pCamera->moveLeft();
@@ -105,14 +102,28 @@ void forward(){
 }
 void back(){
 	pCamera->moveBack();
+	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
+	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
 }
 int px=-1,py=-1;
-void mouse(int nx,int ny){
-	if(px!=-1)
-		pCamera->setViewByMouse(px,py,nx,ny);
-	px=nx;
-	py=ny;
+
+//定时器
+void onTimer(int iTimerIndex){
+	if(!isLeftWin)
+		return;
+	pCamera->setViewByMouse(spx,spy,snx,sny);
+	glutTimerFunc(3, onTimer, 0);
 }
+void refresh(int i){
+	//windows 鼠标设置
+	GetCursorPos(&mpos);
+	pCamera->setViewByMouse(700,400,mpos.x,mpos.y);
+	SetCursorPos(700,400);
+	
+	glutPostRedisplay();
+	glutTimerFunc(20, refresh, 0);
+}
+
 
 //default 0 0 0 / 0 0 -100 / 0 1 0
 //默认情况下，相机位于原点，指向z轴的负向，同时把y轴的正向作为向上向量。这就相当于调用：gluLookAt(0.0,0.0,0.0,    0.0,0.0,-100.0,    0.0,1.0,0.0 )
@@ -124,11 +135,14 @@ void mouse(int nx,int ny){
 /*你可以在这里添加你的测试函数*/
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
+	SetCursorPos(700,400);
+	//glutSetCursor(GLUT_CURSOR_NONE);
+	
 	OBJ.loadObjFromFile("one_block.obj");
+	
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	OBJ.print_vetor();
 	pCamera=cCamera::getCamera();
-
 
 	cController controller;
 	controller.setUpFunc(up);
@@ -137,11 +151,10 @@ int main(int argc, char* argv[]){
 	controller.setBackFunc(back);
 	controller.setLeftFunc(left);
 	controller.setRightFunc(right);
-	controller.setMouseDragFunc(mouse);
 	controller.initController();
-	glutTimerFunc(10,onTimer,0);
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(scene);
+	glutTimerFunc(20,refresh,0);
 	glutMainLoop();
 	return 0;
 }
