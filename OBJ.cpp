@@ -84,18 +84,27 @@ void cFace::render(cOBJ &Obj){
 						Obj.TVertex[this->Vindexs[j].m_nVtI-1].fT);
 				}
 			}
-			glVertex3f(Obj.Vertexs[this->Vindexs[j].m_nVI-1].fX,
-				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fY,
-				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fZ);
+
+			glVertex3f(Obj.Vertexs[this->Vindexs[j].m_nVI-1].fX + Obj.PShift.fX,
+				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fY + Obj.PShift.fY,
+				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fZ + Obj.PShift.fZ);
 		}
 		
 		glEnd();
 
 }
 
-cOBJ::cOBJ(){}
+cOBJ::cOBJ(){
+	//初始化位移
+	setPShift(0.0,0.0,0.0);
+}
 cOBJ::cOBJ(const char* FilePath){
-		FILE *OBJ = fopen(FilePath,"r");
+
+	//初始化位移
+	setPShift(0.0,0.0,0.0);
+
+	//开始处理
+	FILE *OBJ = fopen(FilePath,"r");
 	if(OBJ == NULL){
 		cout<<"ERROR : Please check out whether the file "<<FilePath<<" "<<"is exist..."<<endl;
 		return ;
@@ -372,6 +381,14 @@ void cOBJ::render(){
 		//cout<<"face"<<i<<" have done!"<<endl;
 	}
 }
+
+
+void cOBJ::setPShift(double x,double y,double z){
+	this->PShift.fX = x;
+	this->PShift.fY = y;
+	this->PShift.fZ = z;
+}
+
 
 
 

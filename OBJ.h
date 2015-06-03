@@ -49,6 +49,7 @@ public:
 	bool loadMaterialFromFile(const char* FilePath);//load *.mtl
 	void render();
 	void print_vetor();
+	void setPShift(double x,double y,double z);
 private:
 	vector<sVertex> Vertexs;					//顶点坐标集合
 	vector<sTextureVertex> TVertex;				//顶点纹理坐标集合
@@ -57,5 +58,6 @@ private:
 	vector<cLine> Lines;						//线集合
 	vector<cFace> Faces;						//面集合
 	vector<cMaterial> Materials;				//材质库
+	sVertex PShift;								//位移
 };
 #endif

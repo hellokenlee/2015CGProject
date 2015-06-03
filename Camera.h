@@ -26,7 +26,7 @@ public:
 	void pitchCamera(double angle);
 	//void rotateView(float angle, float x,float y,float z);
 	void setViewByMouse(int px,int py,int nx,int ny);
-	
+
 	void moveForward();					//向前
 	void moveBack();					//向后
 	void moveLeft();					//向左
@@ -39,8 +39,16 @@ private:
 	cCamera();
 	static cCamera *p_Camera;
 	float speed;
+
+	double speed;
 	array<double,3> position;
 	array<double,3> view;
 	array<double,3> up;
+
+public:
+	void setLook();
+private:
+	void rotateView(double angle, double x, double y, double z);
+	void rotateUp(double angle, double x, double y, double z);
 };
 #endif

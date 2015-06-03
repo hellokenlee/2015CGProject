@@ -69,7 +69,7 @@ float cCamera::getSpeed(){
 void cCamera::setSpeed(float speed){
 	this->speed=speed;
 }
-//ÈÆ x Ğı×ª
+//ç»• x æ—‹è½¬
 void cCamera::pitchCamera(double angle){
 	double sinT=sin(angle);
 	double cosT=cos(angle);
@@ -81,7 +81,7 @@ void cCamera::pitchCamera(double angle){
 	//change z
 	view[2]=-dir[0]*sinT+dir[1]*cosT+position[2];
 }
-//ÈÆ y Ğı×ª
+//ç»• y æ—‹è½¬
 void cCamera::yawCamera(double angle){
 	double sinT=sin(angle);
 	double cosT=cos(angle);
@@ -93,7 +93,7 @@ void cCamera::yawCamera(double angle){
 	//change z
 	view[2]=-dir[0]*sinT+dir[1]*cosT+position[2];
 }
-//							Ç°Ò»¿ÌµÄÊó±êÎ»ÖÃ(px,py)    ºóÒ»¿ÌµÄÊó±êÎ»ÖÃ(nx,ny)
+//							å‰ä¸€åˆ»çš„é¼ æ ‡ä½ç½®(px,py)    åä¸€åˆ»çš„é¼ æ ‡ä½ç½®(nx,ny)
 void cCamera::setViewByMouse(int px,int py,int nx,int ny){
 	 double dx=nx-px;
 	 double dy=ny-py;
@@ -104,8 +104,8 @@ void cCamera::setViewByMouse(int px,int py,int nx,int ny){
 }
 
 void cCamera::moveForward(){
-	//¼ÆËã³ö·½ÏòÏòÁ¿ ²¢ÇÒ±ê×¼»¯·½ÏòÏòÁ¿dir[3]
-	//posistion =position+dir[3]µÄÖµ
+	//è®¡ç®—å‡ºæ–¹å‘å‘é‡ å¹¶ä¸”æ ‡å‡†åŒ–æ–¹å‘å‘é‡dir[3]
+	//posistion =position+dir[3]çš„å€¼
 	//view =view+dir
 	float dir[3]={view[0]-position[0],view[1]-position[1],view[2]-position[2]};
 	normalize(dir);

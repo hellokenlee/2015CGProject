@@ -15,11 +15,13 @@ float ft=1;
 cMaterial mat(a,d,s,e,fs,ft);
 cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
+
 cCamera *pCamera;
 int isLeftWin;
 int snx,sny,spx,spy;
 int clipflag=1;
 POINT mpos;
+
 /*glut DisplayFunc*/
 void scene(){
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -37,16 +39,24 @@ void initWindow(int argc,char* argv[]){
 	glutInitWindowPosition(winPosX,winPosY);
 	glDepthMask(GL_TRUE);
 	glutCreateWindow("3D Cube");
-	glEnable(GL_TEXTURE_2D);
-	//光源
-	GLfloat light_position[]={1.0,1.0,1.0,0.0};
-	glLightfv(GL_LIGHT0,GL_POSITION,light_position);
-	//将光源设置应用
-	//glEnable(GL_LIGHTING);
-	//glEnable(GL_LIGHT0);
-	//着色消隐
+
+	//设置光照模型
+	GLfloat light_position[] = {1.0,1.0,1.0,1.0};
+	GLfloat light_ambient [] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat light_diffuse [] = { 0.5, 0.5, 0.5, 1.0 };
+	GLfloat light_specular[] = { 0.8, 0.8, 0.8, 1.0 };
+	
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT0, GL_AMBIENT , light_ambient );
+    glLightfv(GL_LIGHT0, GL_DIFFUSE , light_diffuse );
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_TEXTURE_2D);
 }
 //reshape func
 void reshape(GLsizei w,GLsizei h)
@@ -128,7 +138,6 @@ void refresh(int i){
 //default 0 0 0 / 0 0 -100 / 0 1 0
 //默认情况下，相机位于原点，指向z轴的负向，同时把y轴的正向作为向上向量。这就相当于调用：gluLookAt(0.0,0.0,0.0,    0.0,0.0,-100.0,    0.0,1.0,0.0 )
 /******************************controller debug func  ENDS**************************************/
-
 
 
 
