@@ -1,12 +1,16 @@
 /*All copyrights reversed by KenLee@2015, SS, SYSU*/
 #ifndef CAMERA_H
 #define CAMERA_H
+
 #include <array>
-#include <cmath>
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <gl/glut.h>
 
 #include "util.h"
+
 using namespace std;
+
 //暂定做为一个单例吧
 //根据 glutLookAt(position[3]，view[3]，up[3])
 class cCamera
@@ -24,7 +28,6 @@ public:
 	
 	void yawCamera(double angle);
 	void pitchCamera(double angle);
-	//void rotateView(float angle, float x,float y,float z);
 	void setViewByMouse(int px,int py,int nx,int ny);
 
 	void moveForward();					//向前
@@ -34,7 +37,7 @@ public:
 	void moveUp();						//向上
 	void moveDown();					//向下
 
-	void bindCamera();					//调用gllookat();
+	void bindCamera();					//调用glulookat();
 private:
 	cCamera();
 	static cCamera *p_Camera;
@@ -45,4 +48,5 @@ private:
 	array<double,3> up;
 
 };
+
 #endif
