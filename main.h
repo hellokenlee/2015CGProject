@@ -9,6 +9,7 @@
 #include "OBJ.h"
 #include "Controller.h"
 #include "Cutscenes.h"
+#include "Particle.h"
 //常用宏 & 常量
 
 

@@ -66,7 +66,6 @@ void cLine::render(const cOBJ &Obj){}	//waiting...
 cFace::cFace(){}
 void cFace::render(cOBJ &Obj){
 		//注意加上判断是否有材质
-
 		if(this->Mindex != -1){
 			(Obj.Materials[this->Mindex]).setMaterial();
 		}
@@ -74,7 +73,7 @@ void cFace::render(cOBJ &Obj){
 		for(size_t j = 0;j<this->Vindexs.size();j++){
 			//切记索引要-1
 			if(this->Vindexs[j].m_bVt){
-				if(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fT == -1){
+				/*if(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fT == -1){
 					glTexCoord2f(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fP,
 						Obj.TVertex[this->Vindexs[j].m_nVtI-1].fS);
 				}
@@ -82,15 +81,15 @@ void cFace::render(cOBJ &Obj){
 					glTexCoord3f(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fP,
 						Obj.TVertex[this->Vindexs[j].m_nVtI-1].fS,
 						Obj.TVertex[this->Vindexs[j].m_nVtI-1].fT);
-				}
-			}
+				}*/
 
+				glTexCoord3f(Obj.TVertex[this->Vindexs[j].m_nVtI-1].fP,Obj.TVertex[this->Vindexs[j].m_nVtI-1].fS,Obj.TVertex[this->Vindexs[j].m_nVtI-1].fT);
+			}
 			/*glVertex3f(Obj.Vertexs[this->Vindexs[j].m_nVI-1].fX + Obj.PShift.fX,
 				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fY + Obj.PShift.fY,
 				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fZ + Obj.PShift.fZ);*/
 			glVertex3dv((double*)&Obj.Vertexs[Vindexs[j].m_nVI-1]);
 		}
-		
 		glEnd();
 
 }
