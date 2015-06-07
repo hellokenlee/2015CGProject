@@ -91,13 +91,15 @@ void loading(){
 	glFrustum(-2.0, 2.0, -2.0 * (GLfloat)winHeight / (GLfloat)winWidth,2.0* (GLfloat)winHeight / (GLfloat)winWidth, 2.0, 500.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-			printf("loading terrian...");
+			printf("loading terrain...");
 	OBJ.loadObjFromFile("minecraft.obj");
 			printf("done!\nloading sky...");
 	sOBJ.loadObjFromFile("skyBox5s.obj");
 			printf("done!\nsetting camera...");
 	pCamera=cCamera::getCamera();
+	pCamera->setCamera(5.595848,7.462796,9.431834,5.408215,7.411818,8.450918,0,1,0);
 			printf("done!\n");
+
 	glutDisplayFunc(scene);
 	glutReshapeFunc(reshape);
 	glutTimerFunc(20,refresh,0);
@@ -110,8 +112,8 @@ void loading(){
 
 void up(){
 	pCamera->moveUp();
-	//pCamera->pitchCamera(0.05);
-	//glutPostRedisplay();
+	printf("pos:(%lf,%lf,%lf)\nview:(%lf,%lf,%lf)\n",pCamera->getPosition()[0],pCamera->getPosition()[1],pCamera->getPosition()[2],
+		pCamera->getView()[0],pCamera->getView()[1],pCamera->getView()[2]);
 }
 void down(){
 	pCamera->moveDown();
@@ -125,7 +127,8 @@ void right(){
 
 void forward(){
 	pCamera->moveForward();
-	printf("pos:(%d,%d,%d)\nview:(%d,%d,%d)",pCamera->getPosition()[0],)
+	printf("pos:(%lf,%lf,%lf)\nview:(%lf,%lf,%lf)\n",pCamera->getPosition()[0],pCamera->getPosition()[1],pCamera->getPosition()[2],
+		pCamera->getView()[0],pCamera->getView()[1],pCamera->getView()[2]);
 }
 void back(){
 	pCamera->moveBack();
