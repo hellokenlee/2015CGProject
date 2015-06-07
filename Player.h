@@ -20,6 +20,8 @@ public:
 	void moveLeft();
 	void moveRight();
 	void jump();
+	void fpvRender();
+	void tpvRender();
 private:
 	cOBJ PlayerOBJ;
 	sBox BoundingBox;			//×îÐ¡°üÎ§ºÐ

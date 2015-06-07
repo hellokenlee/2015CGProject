@@ -85,9 +85,10 @@ void cFace::render(cOBJ &Obj){
 				}
 			}
 
-			glVertex3f(Obj.Vertexs[this->Vindexs[j].m_nVI-1].fX + Obj.PShift.fX,
+			/*glVertex3f(Obj.Vertexs[this->Vindexs[j].m_nVI-1].fX + Obj.PShift.fX,
 				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fY + Obj.PShift.fY,
-				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fZ + Obj.PShift.fZ);
+				Obj.Vertexs[this->Vindexs[j].m_nVI-1].fZ + Obj.PShift.fZ);*/
+			glVertex3dv((double*)&Obj.Vertexs[Vindexs[j].m_nVI-1]);
 		}
 		
 		glEnd();
@@ -378,7 +379,6 @@ void cOBJ::render(){
 	//cout<<"face_size:"<<this->Faces.size()<<endl;
 	for(size_t i = 0;i<this->Faces.size();i++){
 		this->Faces[i].render(*this);
-		//cout<<"face"<<i<<" have done!"<<endl;
 	}
 }
 
@@ -394,24 +394,25 @@ void cOBJ::setPShift(double x,double y,double z){
 
 //测试使用
 void cOBJ::print_vetor(){
-
-	/*
+	show("Vectex:");
 	//顶点信息
 	for(size_t i = 0;i<this->Vertexs.size();i++){
-		cout<<"x : "<<this->Vertexs[i].fX<<"y : "<<this->Vertexs[i].fY<<"z : "<<this->Vertexs[i].fZ<<endl;
+		cout<<"x : "<<this->Vertexs[i].fX<<"   y : "<<this->Vertexs[i].fY<<"   z : "<<this->Vertexs[i].fZ<<endl;
 	}
-	*/
+	show("Face:");
 	//obj信息
-	/*
 	for(size_t i = 0;i<this->Faces.size();i++){
+		cout<<"face["<<i<<"]:"<<endl;
 		for(size_t j = 0;j<this->Faces[i].Vindexs.size();j++){
-			//cout<<"F_V : "<<this->Faces[i].Vindexs[j].m_nVI<<endl;
-			//cout<<"F_VN : "<<this->Faces[i].Vindexs[j].m_bVn<<"  "<<this->Faces[i].Vindexs[j].m_nVnI<<endl;
+			cout<<"F_V : "<<this->Faces[i].Vindexs[j].m_nVI<<endl;
+			cout<<"F_VN : "<<this->Faces[i].Vindexs[j].m_bVn<<"  "<<this->Faces[i].Vindexs[j].m_nVnI<<endl;
 			cout<<"F_VT : "<<this->Faces[i].Vindexs[j].m_bVt<<"  "<<this->Faces[i].Vindexs[j].m_nVtI<<"values: "<<this->TVertex[this->Faces[i].Vindexs[j].m_nVtI-1].fP<<endl;
-			//cout<<"index : "<<this->Faces[i].Mindex<<endl;
+			cout<<"index : "<<this->Faces[i].Mindex<<endl;
 		}
+		show("");
+		show("");
 	}
-
+	
 	/*
 	//mtl信息
 	for(size_t i = 0;i<this->Materials.size();i++){

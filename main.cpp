@@ -4,31 +4,11 @@ int winHeight =600;
 int winWidth =600;
 int winPosX=400;
 int winPosY=100;
-cTexture tex;
-cTexture tex2;
-array<float,4> a={0.8,0,0.8,1.0};
-array<float,4> d={0.8,0,0.8,1.0};
-array<float,4> s={1,0,1,1};
-array<float,4> e={0,0,0,1};
-float fs=50;
-float ft=1;
-cMaterial mat(a,d,s,e,fs,ft);
-cMaterial mat2(a,d,s,e,fs,ft);
 cOBJ OBJ;
+cOBJ sOBJ;
 cCamera *pCamera;
-int isLeftWin;
-int snx,sny,spx,spy;
-int clipflag=1;
 POINT mpos;
-
-/*glut DisplayFunc*/
-void scene(){
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-	pCamera->bindCamera();
-	OBJ.render();
-	glutSwapBuffers();
-}
+Cutscenes cg;
 
 /*初始化*/
 void initWindow(int argc,char* argv[]){
@@ -37,25 +17,34 @@ void initWindow(int argc,char* argv[]){
 	glutInitWindowSize(winWidth,winHeight);
 	glutInitWindowPosition(winPosX,winPosY);
 	glDepthMask(GL_TRUE);
-	glutCreateWindow("3D Cube");
+	glutCreateWindow("MCRoaming");
 
 	//设置光照模型
 	GLfloat light_position[] = {1.0,1.0,1.0,1.0};
 	GLfloat light_ambient [] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat light_diffuse [] = { 0.5, 0.5, 0.5, 1.0 };
 	GLfloat light_specular[] = { 0.8, 0.8, 0.8, 1.0 };
-	
+
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 	glLightfv(GL_LIGHT0, GL_AMBIENT , light_ambient );
-    glLightfv(GL_LIGHT0, GL_DIFFUSE , light_diffuse );
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE , light_diffuse );
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHTING);
+	//glEnable(GL_LIGHT0);
 	glDepthFunc(GL_LESS);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_TEXTURE_2D);
+}
+/*main scene Func*/
+void scene(){
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	pCamera->bindCamera();
+	OBJ.render();
+	sOBJ.render();
+	glutSwapBuffers();
 }
 //reshape func
 void reshape(GLsizei w,GLsizei h)
@@ -65,21 +54,59 @@ void reshape(GLsizei w,GLsizei h)
 	glLoadIdentity();
 	if(w<=h)
 		glFrustum(-2.0, 2.0, -2.0 * (GLfloat)h / (GLfloat)w,
-			2.0* (GLfloat)h / (GLfloat)w, 2.0, 100.0);
-		//glOrtho(-2.0,2.0,-2.0*(GLfloat)h/(GLfloat)w,
-		//2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0);
+		2.0* (GLfloat)h / (GLfloat)w, 2.0, 500.0);
 	else
 		glFrustum(-2.0*(GLfloat)h/(GLfloat)w,
-		2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0,2.0,100.0);
-		//glOrtho(-2.0*(GLfloat)h/(GLfloat)w,
-		//2.0*(GLfloat)h/(GLfloat)w,-2.0,2.0,-10.0,10.0);
+		2.0*(GLfloat)h/(GLfloat)w,-10.0,10.0,2.0,500.0);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
+}
+void refresh(int i){
+	//windows 鼠标设置
+	GetCursorPos(&mpos);
+	pCamera->setViewByMouse(700,400,mpos.x,mpos.y);
+	SetCursorPos(700,400);
+	//刷新显示
+	glutPostRedisplay();
+	glutTimerFunc(20, refresh, 0);
 }
 
-/******************************controller debug func **************************************/
+
+/*loading scene Func */
+void loading(){
+	gluOrtho2D(-winWidth/2, winWidth, -winHeight/2, winHeight/2);
+	cg.selectFont(48,ANSI_CHARSET,"Comic Sans MS");
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glRasterPos2f(0.0,-winHeight/4);
+	cg.drawIcon();
+	glColor3f(1,1,1);
+	cg.drawText("Loading...");
+	glutSwapBuffers();
+
+	//jump to main scene
+	glViewport(0,0,winWidth,winHeight);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glFrustum(-2.0, 2.0, -2.0 * (GLfloat)winHeight / (GLfloat)winWidth,2.0* (GLfloat)winHeight / (GLfloat)winWidth, 2.0, 500.0);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+			printf("loading terrian...");
+	OBJ.loadObjFromFile("minecraft.obj");
+			printf("done!\nloading sky...");
+	sOBJ.loadObjFromFile("skyBox5s.obj");
+			printf("done!\nsetting camera...");
+	pCamera=cCamera::getCamera();
+			printf("done!\n");
+	glutDisplayFunc(scene);
+	glutReshapeFunc(reshape);
+	glutTimerFunc(20,refresh,0);
+	glutPostRedisplay();
+}
+
+
+
+/******************************controller debug func BEGINS **************************************/
 
 void up(){
 	pCamera->moveUp();
@@ -88,70 +115,28 @@ void up(){
 }
 void down(){
 	pCamera->moveDown();
-	//pCamera->pitchCamera(-0.05);
-
 }
 void left(){
 	pCamera->moveLeft();
-	//pCamera->yawCamera(0.05);
-	//pCamera->pitchCamera(0.05);
-	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
-	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
 }
 void right(){
 	pCamera->moveRight();
-	//pCamera->yawCamera(-0.05);
-	//pCamera->pitchCamera(-0.05);
-	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
-	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
 }
 
 void forward(){
 	pCamera->moveForward();
+	printf("pos:(%d,%d,%d)\nview:(%d,%d,%d)",pCamera->getPosition()[0],)
 }
 void back(){
 	pCamera->moveBack();
-	//cout<<"camPos:"<<pCamera->getPosition()[0]<<", "<<pCamera->getPosition()[1]<<" ,"<<pCamera->getPosition()[2]<<endl;
-	//cout<<"camView:"<<pCamera->getView()[0]<<" ,"<<pCamera->getView()[1]<<" ,"<<pCamera->getView()[2]<<endl;
 }
-int px=-1,py=-1;
-
-//定时器
-void onTimer(int iTimerIndex){
-	if(!isLeftWin)
-		return;
-	pCamera->setViewByMouse(spx,spy,snx,sny);
-	glutTimerFunc(3, onTimer, 0);
-}
-void refresh(int i){
-	//windows 鼠标设置
-	GetCursorPos(&mpos);
-	pCamera->setViewByMouse(700,400,mpos.x,mpos.y);
-	SetCursorPos(700,400);
-	
-	glutPostRedisplay();
-	glutTimerFunc(20, refresh, 0);
-}
-
-
-//default 0 0 0 / 0 0 -100 / 0 1 0
-//默认情况下，相机位于原点，指向z轴的负向，同时把y轴的正向作为向上向量。这就相当于调用：gluLookAt(0.0,0.0,0.0,    0.0,0.0,-100.0,    0.0,1.0,0.0 )
 /******************************controller debug func  ENDS**************************************/
-
-
 
 /*你可以在这里添加你的测试函数*/
 int main(int argc, char* argv[]){
 	initWindow(argc,argv);
+	//设定控制
 	SetCursorPos(700,400);
-	//glutSetCursor(GLUT_CURSOR_NONE);
-	
-	OBJ.loadObjFromFile("one_block.obj");
-	
-	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	OBJ.print_vetor();
-	pCamera=cCamera::getCamera();
-
 	cController controller;
 	controller.setUpFunc(up);
 	controller.setDownFunc(down);
@@ -160,9 +145,10 @@ int main(int argc, char* argv[]){
 	controller.setLeftFunc(left);
 	controller.setRightFunc(right);
 	controller.initController();
-	glutReshapeFunc(reshape);
-	glutDisplayFunc(scene);
-	glutTimerFunc(20,refresh,0);
+	glutSetCursor(GLUT_CURSOR_NONE);
+	//设定 显示函数
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glutDisplayFunc(loading);
 	glutMainLoop();
 	return 0;
 }
